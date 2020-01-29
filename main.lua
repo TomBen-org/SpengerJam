@@ -4,6 +4,9 @@ local renderer = require("renderer")
 
 local state
 function love.load()
+  math.randomseed(1)
+  --math.randomseed(os.time()) UNCOMMENT ME IN FINAL VER
+
   state = simulation.create()
   units = {
     {button='a',type='press'},

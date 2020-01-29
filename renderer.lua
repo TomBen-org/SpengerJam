@@ -6,7 +6,7 @@ renderer.render_state = function(state)
 
   for _, mouse in pairs(state.mice) do
     love.graphics.setColor(1, 0, 0)
-    love.graphics.circle("fill", mouse.x, mouse.y, 100)
+    love.graphics.circle("fill", mouse.pos[1], mouse.pos[2], 100)
   end
 end
 
