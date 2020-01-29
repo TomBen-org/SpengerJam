@@ -5,6 +5,12 @@ local renderer = require("renderer")
 local state
 function love.load()
   state = simulation.create()
+  --global.units = {
+  --  {button='a',type='press'},
+  --  {button='b',type='press'},
+  --  {button='c',type='press'},
+  --  {button='d',type='press'}
+  --}
 end
 
 function love.draw()
