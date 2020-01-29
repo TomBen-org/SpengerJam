@@ -20,14 +20,10 @@ end
 function love.resize()
 end
 
-local pressed = {}
-
 function love.keypressed(key)
-    pressed[key] = 1
 end
 
 function love.keyreleased(key)
-    pressed[key] = nil
 end
 
 function love.mousemoved(x,y)
