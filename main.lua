@@ -1,4 +1,10 @@
 function love.load()
+  global.units = {
+    {button='a',type='press'},
+    {button='b',type='press'},
+    {button='c',type='press'},
+    {button='d',type='press'}
+  }
 end
 
 function love.draw()
