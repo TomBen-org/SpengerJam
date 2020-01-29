@@ -36,9 +36,15 @@ function love.resize()
 end
 
 function love.keypressed(key)
+  if key == "space" then
+    state.trapdoors_open = true
+  end
 end
 
 function love.keyreleased(key)
+  if key == "space" then
+    state.trapdoors_open = false
+  end
 end
 
 function love.mousemoved(x,y)

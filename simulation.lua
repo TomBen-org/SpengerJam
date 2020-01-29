@@ -11,15 +11,25 @@ simulation.create = function()
         pos = {100, 100},
 
         speed = 5,
-        direction = misc_math.random_direction_vector()
+        direction = {1, 0},
       }
     },
+
+    trapdoors =
+    {
+      {
+        pos = { constants.screen_w - constants.trapdoor_width - 100, 300 }
+      }
+    },
+
+    trapdoors_open = false,
   }
 end
 
 simulation.update = function(state)
+  local to_remove = {}
 
-  for _, mouse in pairs(state.mice) do
+  for mouse_index, mouse in pairs(state.mice) do
     local newpos =
     {
       mouse.pos[1] + mouse.direction[1] * mouse.speed,
@@ -32,6 +42,23 @@ simulation.update = function(state)
       mouse.pos = newpos
     end
 
+    for _, trapdoor in pairs(state.trapdoors) do
+      if state.trapdoors_open and misc_math.point_in_box(
+        mouse.pos[1],
+        mouse.pos[2],
+        trapdoor.pos[1] - constants.trapdoor_width/2,
+        trapdoor.pos[2] - constants.trapdoor_height/2,
+        constants.trapdoor_width,
+        constants.trapdoor_height)
+      then
+        to_remove[mouse_index] = 1
+      end
+    end
+
+  end
+
+  for mouse_index, _ in pairs(to_remove) do
+    table.remove(state.mice, mouse_index)
   end
 
 end

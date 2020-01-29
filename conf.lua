@@ -2,6 +2,11 @@ constants =
 {
   screen_w = 1280,
   screen_h = 720,
+
+  trapdoor_width = 100,
+  trapdoor_height = 100,
+
+  mouse_radius = 20,
 }
 
 function love.conf(t)
