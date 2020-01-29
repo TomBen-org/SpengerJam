@@ -1,5 +1,11 @@
 local simulation = require("simulation")
 local renderer = require("renderer")
+local vector = require('vector')
+
+--TODO: mice not collide
+--TODO: trapdoor eats mice
+--TODO: mice pool (puzzle)
+--TODO: puzzle generator
 
 
 local state
@@ -8,17 +14,13 @@ function love.load()
   --math.randomseed(os.time()) UNCOMMENT ME IN FINAL VER
 
   state = simulation.create()
-  units = {
-    {button='a',type='press'},
-    {button='b',type='press'},
-    {button='c',type='press'},
-    {button='d',type='press'}
-  }
   mouse_state = 0
-  mouse_speed = 100
+  mouse_speed = 3
+  mouse_drag = 0.001
+  max_push_distance = 150
   mice = {}
   for k=1,100 do
-    table.insert(mice,{x=math.random(10,600),y=math.random(10,600),dx=0,dy=0})
+    table.insert(mice,{pos=vector.new(math.random(10,600),math.random(10,600)),vector=vector.new(0,0)})
   end
 end
 
@@ -26,10 +28,11 @@ function love.draw()
   renderer.render_state(state)
 
   love.graphics.print("mouse_state: "..mouse_state,0,0)
-
+  love.graphics.setColor(0,125,30)
   for _, mouse in pairs(mice) do
-    love.graphics.circle("fill",mouse.x,mouse.y,5,15)
+    love.graphics.circle("fill",mouse.pos.x,mouse.pos.y,5,15)
   end
+  love.graphics.setColor(0,0,0)
 end
 
 function love.resize()
@@ -75,14 +78,25 @@ function love.quit()
 end
 
 local mouse_update = function(mouse,dt)
-  mouse.x = mouse.x + mouse.dx*mouse_speed*dt
-  mouse.y = mouse.y + mouse.dy*mouse_speed*dt
-
+  local relative_mouse_vector = vector.new(love.mouse.getX(),love.mouse.getY())
+  relative_mouse_vector = relative_mouse_vector - mouse.pos
+  local distance = max_push_distance-(math.min(relative_mouse_vector:len(),max_push_distance))
+  if distance < 10 then
+    relative_mouse_vector = vector.new(0,0)
+  end
+  relative_mouse_vector = relative_mouse_vector * dt * mouse_speed
   if mouse_state == 1 then
     --push away
+    relative_mouse_vector = relative_mouse_vector * -1
   elseif mouse_state == 2 then
     --pull towards
+  else
+    --zero
+    relative_mouse_vector = vector.new(0,0)
   end
+  mouse.vector = mouse.vector + relative_mouse_vector
+  mouse.pos = mouse.pos + mouse.vector*dt*mouse_speed*math.sqrt(distance)
+  mouse.vector = mouse.vector * dt * mouse_drag
 end
 
 local accumulatedDeltaTime = 0
