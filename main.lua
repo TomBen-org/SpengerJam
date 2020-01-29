@@ -1,15 +1,28 @@
+local simulation = require("simulation")
+local renderer = require("renderer")
+
+
+local state
 function love.load()
+  state = simulation.create()
 end
 
 function love.draw()
+  renderer.render_state(state)
 end
 
 function love.resize()
 end
 
+local pressed = {}
+
 function love.keypressed(key)
+    pressed[key] = 1
 end
 
+function love.keyreleased(key)
+    pressed[key] = nil
+end
 
 function love.mousemoved(x,y)
 end
@@ -32,8 +45,8 @@ function love.update(deltaTime)
   local tickTime = 1/60
 
   while accumulatedDeltaTime > tickTime do
-    --simulation.update(state)
-    accumulatedDeltaTime = accumulatedDeltaTime - tickTime
+      simulation.update(state)
+      accumulatedDeltaTime = accumulatedDeltaTime - tickTime
   end
 
 end
