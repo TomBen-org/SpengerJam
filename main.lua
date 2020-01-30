@@ -14,6 +14,7 @@ local vector = require('vector')
 --BLOAT: placeable trapdoors
 --BLOAT: Alapati facts
 
+local music
 
 
 local state
@@ -22,6 +23,10 @@ local last_state
 function love.load()
   math.randomseed(1)
   renderer.on_load()
+
+  music = love.audio.newSource("SFX/Daler Mehndi - Tunak Tunak Tun Video.mp3", "static")
+  music:setLooping(true)
+
   --math.randomseed(os.time()) UNCOMMENT ME IN FINAL VER
 
   --state = simulation.create()
@@ -97,6 +102,7 @@ end
 function love.mousepressed(x,y,button)
   if not state then
     state = simulation.create()
+    music:play()
   end
 
   if state.push_pull == 0 and button == 2 then
@@ -142,5 +148,6 @@ function love.update(deltaTime)
   if state.lives == 0 then
     last_state = state
     state = nil
+    music:stop()
   end
 end
