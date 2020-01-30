@@ -8,13 +8,13 @@ local render_mouse = function(mouse)
   elseif mouse.infection == 'zombie' then
     love.graphics.setColor(0.2, 1, 0.2)
   end
-  local ox = 128+64
-  local oy = 128+86
-  local scale = 0.6
+  local ox = 0
+  local oy = 0
+  local scale = 2
   love.graphics.setColor(1,1,1)
   if mouse.animation then
     if mouse.infection == 'healthy' then
-      mouse.animation:draw(images.rat_normal.png,mouse.pos.x-ox,mouse.pos.y-oy)
+      mouse.animation:draw(images.rat_normal.png,mouse.pos.x-ox,mouse.pos.y-oy,0,scale,scale)
     elseif mouse.infection == 'albino' then
       mouse.animation:draw(images.rat_albino.png,mouse.pos.x-ox,mouse.pos.y-oy)
     elseif mouse.infection == 'zombie' then
@@ -51,7 +51,7 @@ renderer.on_load = function()
   }
   images.rat_normal = {
     png = love.graphics.newImage('assets/rat-normal.png'),
-    grid = anim8.newGrid(384,384,384*8,384)
+    grid = anim8.newGrid(64,64,64*16,64)
   }
   images.rat_albino = {
     png = love.graphics.newImage('assets/rat-albino.png'),
@@ -78,8 +78,16 @@ renderer.update = function(state,dt)
   
   for _, mouse in pairs(state.mice) do
     if not mouse.animation then
-      mouse.animation = anim8.newAnimation(images.rat_zombie.grid('1-8',1), 0.08)
-      mouse.animation:gotoFrame(math.random(1,8))
+      if mouse.infection == 'healthy' then
+        mouse.animation = anim8.newAnimation(images.rat_normal.grid('1-16',1), 0.04)
+        mouse.animation:gotoFrame(math.random(1,16))
+      elseif mouse.infection == 'albino' then
+        mouse.animation = anim8.newAnimation(images.rat_albino.grid('1-8',1), 0.08)
+        mouse.animation:gotoFrame(math.random(1,8))
+      elseif mouse.infection == 'zombie' then
+        mouse.animation = anim8.newAnimation(images.rat_zombie.grid('1-8',1), 0.08)
+        mouse.animation:gotoFrame(math.random(1,8))
+      end
     end
     mouse.animation:update(dt)
   end
@@ -90,7 +98,7 @@ renderer.render_state = function(state)
   love.graphics.clear()
 
   love.graphics.setColor(1, 1, 1)
-  love.graphics.draw(images.room.png,0,0)
+  love.graphics.draw(images.room.png,0,0,0,1,1)
 
   --love.graphics.setColor(1,1,0)
   --love.graphics.rectangle("line", 0, 0, constants.screen_w, constants.clip_top)
