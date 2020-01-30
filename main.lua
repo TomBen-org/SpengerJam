@@ -11,6 +11,7 @@ local vector = require('vector')
 --BLOAT: Alapati facts
 
 local music
+local elevator_music
 
 
 local state
@@ -23,6 +24,10 @@ function love.load()
 
   music = love.audio.newSource("SFX/Daler Mehndi - Tunak Tunak Tun Video.mp3", "static")
   music:setLooping(true)
+  elevator_music = love.audio.newSource("SFX/Elevator-music.mp3", "static")
+  elevator_music:setLooping(true)
+
+  elevator_music:play()
 
   --math.randomseed(os.time()) UNCOMMENT ME IN FINAL VER
 
@@ -96,6 +101,7 @@ function love.mousepressed(x,y,button)
   if not state then
     state = simulation.create()
     music:play()
+    elevator_music:stop()
   end
 
   if state.push_pull == 0 and button == 1 then
@@ -143,6 +149,7 @@ function love.update(deltaTime)
     last_state = state
     state = nil
     music:stop()
+    elevator_music:play()
     alapati = -600
   end
 end
