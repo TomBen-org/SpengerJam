@@ -3,6 +3,9 @@ constants =
   screen_w = 1280,
   screen_h = 720,
 
+  clip_bottom = 100,
+  clip_top = 100,
+
   trapdoor_width = 100,
   trapdoor_height = 100,
   mouse_speed = 5,

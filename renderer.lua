@@ -25,6 +25,10 @@ renderer.render_state = function(state)
   love.graphics.setColor(0.5,0.5,0.5)
   love.graphics.clear()
 
+  love.graphics.setColor(1,1,0)
+  love.graphics.rectangle("fill", 0, 0, constants.screen_w, constants.clip_top)
+  love.graphics.rectangle("fill", 0, constants.screen_h - constants.clip_bottom, constants.screen_w, constants.clip_bottom)
+
   for _, trapdoor in pairs(state.trapdoors) do
     love.graphics.setColor(0, 1, 0)
 

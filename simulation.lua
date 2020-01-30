@@ -1,5 +1,6 @@
 local misc_math = require("misc_math")
 local vector = require("vector")
+local collisions = require("collisions")
 
 local function shuffle(t)
     local rand = math.random
@@ -13,14 +14,26 @@ local function shuffle(t)
     end
 end
 
-local activate_mouse = function(state,x,y)
+local activate_mouse = function(state, collider, x,y)
   local next_mouse = table.remove(state.mice_pool,1)
-  table.insert(state.mice,{
-    pos = vector.new(x, y),
-    infection = next_mouse.infection,
-    active = true,
-    to_pool = false,
-  })
+
+  local new_mouse
+  for i=1,100 do
+    new_mouse =
+    {
+      pos = vector.new(x, y + math.random(0, 100)),
+      infection = next_mouse.infection,
+      active = true,
+      to_pool = false,
+    }
+    if collisions.try_add_mouse(collider, new_mouse) then
+      table.insert(state.mice, new_mouse)
+      return
+    end
+  end
+
+  -- we failed, just put it back
+  table.insert(state.mice_pool, 1, next_mouse)
 end
 
 local check_spawn_mouse = function(state)
@@ -28,8 +41,14 @@ local check_spawn_mouse = function(state)
     local spacing = math.random(1,4) * 20
     local group_size = math.random(1,math.min(4,#state.mice_pool))
     local starting_y = math.random(10,constants.screen_h-(spacing*group_size))
+
+    local collider = collisions.create_empty()
+    for _, mouse in pairs(state.mice) do
+      assert(collisions.try_add_mouse(collider, mouse))
+    end
+
     for k = 1, group_size do
-      activate_mouse(state,math.random(-60,-10),starting_y + k*spacing)
+      activate_mouse(state, collider, math.random(-60,-10),starting_y + k*spacing)
     end
     state.last_spawn_update = state.ticks_played
   end
@@ -74,8 +93,11 @@ simulation.create = function()
 end
 
 simulation.update = function(state)
+  local collider = collisions.create_empty()
+  collisions.add_all_mice(collider, state)
+
   for mouse_index, mouse in pairs(state.mice) do
-    mouse.pos.x = mouse.pos.x + constants.mouse_x_speed
+    local new_mouse_pos = vector.new(mouse.pos.x + constants.mouse_x_speed, mouse.pos.y)
 
     local target_y_position = love.mouse.getY()
     local distance = (mouse.pos - vector.new(love.mouse.getX(), target_y_position)):len()
@@ -103,9 +125,25 @@ simulation.update = function(state)
       push_pull_offset = push_pull_offset * -1
     end
 
+    local try_place_positions =
+    {
+      new_mouse_pos,
+      mouse.pos,
+    }
+
 
     if state.push_pull ~= 0 or push_pull_offset == 0 then
-      mouse.pos.y = mouse.pos.y + push_pull_offset * constants.mouse_y_speed
+      table.insert(try_place_positions, 1, vector.new(new_mouse_pos.x, mouse.pos.y + push_pull_offset * constants.mouse_y_speed))
+    end
+
+    -- don't collide with self
+    collider:remove(mouse.collider_tmp)
+
+    for _, newpos in pairs(try_place_positions) do
+      mouse.pos = newpos
+      if collisions.try_add_mouse(collider, mouse) then
+        break
+      end
     end
 
     if mouse.pos.x >= constants.screen_w then

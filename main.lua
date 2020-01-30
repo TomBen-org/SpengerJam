@@ -2,7 +2,6 @@ local simulation = require("simulation")
 local renderer = require("renderer")
 local vector = require('vector')
 
---TODO: mice not collide with edge or each other
 --TODO: puzzle generator
 --TODO: score feedback
 --TODO: lives/fuckups
