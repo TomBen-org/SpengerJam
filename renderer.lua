@@ -72,6 +72,14 @@ renderer.on_load = function()
   {
     png = love.graphics.newImage("assets/heart-icon/heart pixel art 32x32.png")
   }
+  images.alapati =
+  {
+    png = love.graphics.newImage("assets/alapati/alapati.png")
+  }
+  images.bubble =
+  {
+    png = love.graphics.newImage("assets/speech-bubble/speech-bubble.png")
+  }
 end
 
 renderer.update = function(state,dt)
@@ -143,15 +151,82 @@ renderer.render_state = function(state)
 
   end
 
-renderer.render_before_game = function(maybe_state)
+renderer.render_before_game = function(maybe_state, alapati)
+  --love.graphics.setColor(1,1,1)
+  --
+  --if maybe_state then
+  --  love.graphics.print("You Lose!", 100, 70)
+  --  love.graphics.print("Score: " .. maybe_state.score, 100, 80)
+  --end
+  --
+  --love.graphics.print("Click to start", 100, 100)
+
   love.graphics.setColor(1,1,1)
+  love.graphics.draw(images.alapati.png, 100, constants.screen_h - 600 - alapati)
 
-  if maybe_state then
-    love.graphics.print("You Lose!", 100, 70)
-    love.graphics.print("Score: " .. maybe_state.score, 100, 80)
-  end
 
-  love.graphics.print("Click to start", 100, 100)
+  local texts =
+  {
+    {
+      "FUN FACT: Did you know that I, Alapati Venkataramaiah",
+      "entered the Quit India Movement in 09/08/1942."
+    },
+    {
+      "FUN FACT: Did you know that I, Alapati Venkataramaiah",
+      "Organized a stop for the special train taking",
+      "Gandhi near his village and ensured thousands",
+      "of people could get a glimpse of Mahatma in 1946."
+    },
+    {
+      "FUN FACT: Did you know that I, Alapati Venkataramaiah",
+      "was unanimously elected as the chairman of Guntur",
+      "District Cooperative Central Bank and continued to be",
+      "re elected for 5 times in the same post until 1962."
+    },
+    {
+      "FUN FACT: Did you know that I, Alapati Venkataramaiah",
+      "was  President of the Guntur District Congress in 1951."
+    },
+    {
+      "FUN FACT: Did you know that I, Alapati Venkataramaiah",
+      "became the Municipal Chairman of Tenali in 1959."
+    },
+    {
+      "FUN FACT: Did you know that I, Built RanaRanga Chowk",
+      "in Tenali a memorial for 7 people who lost their",
+      "lives in Police firing near Railway station during",
+      "the Quit India Movemen in 1959"
+    }
+  }
+
+  if alapati == -100 then
+    love.graphics.draw(images.bubble.png, 450, 300, 0, 0.5)
+
+    love.graphics.setColor(0,0,0)
+
+    local text_y = 320
+    local lh = 30
+
+    local t = function(text)
+      for i, line in pairs(text) do
+        love.graphics.draw(love.graphics.newText(the_font, line), 570, text_y); text_y = text_y + lh;
+      end
+    end
+
+
+    t({"                                           Alapati!"})
+    if maybe_state then
+      t({"You lose!"})
+      t({"Score: " .. maybe_state.score})
+    else
+      t({"Please help me, minister Alapati Venkataramaiah, fix this rat", "virus outbreak by sorting the diseased rats!"})
+    end
+    t({"Click to start"})
+    t({""})
+    t(texts[#texts])
+
+
+    end
 end
 
 return renderer

@@ -15,6 +15,7 @@ local music
 
 local state
 local last_state
+local alapati = -600
 
 function love.load()
   math.randomseed(1)
@@ -37,7 +38,7 @@ function love.draw()
   love.graphics.clear()
 
   if not state then
-    renderer.render_before_game(last_state)
+    renderer.render_before_game(last_state, alapati)
     return
   end
   renderer.render_state(state)
@@ -124,6 +125,7 @@ end
 local accumulatedDeltaTime = 0
 function love.update(deltaTime)
   if not state then
+    alapati = math.min(alapati + 4, -100)
     return
   end
 
@@ -141,5 +143,6 @@ function love.update(deltaTime)
     last_state = state
     state = nil
     music:stop()
+    alapati = -600
   end
 end
