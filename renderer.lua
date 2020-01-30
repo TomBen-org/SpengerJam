@@ -94,6 +94,10 @@ renderer.render_state = function(state)
 --  love.graphics.setColor(1,1,0, 0.8)
 --  love.graphics.rectangle("fill", 0, 0, constants.screen_w, constants.clip_top)
 --  love.graphics.rectangle("fill", 0, constants.screen_h - constants.clip_bottom, constants.screen_w, constants.clip_bottom)
+
+
+  love.graphics.setColor(1, 0, 0, state.blood_alpha)
+  love.graphics.rectangle("fill", 0, 0, constants.screen_w, constants.screen_h)
 end
 
 return renderer

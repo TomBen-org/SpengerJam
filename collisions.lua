@@ -13,7 +13,6 @@ collisions.create_empty = function()
 end
 
 collisions.try_add_mouse = function(collider, mouse)
-  print(mouse.pos.x-constants.mouse_width/2, mouse.pos.y-constants.mouse_width/2, constants.mouse_width, constants.mouse_height)
   local mouse_collider = collider:rectangle(mouse.pos.x-constants.mouse_width/2, mouse.pos.y-constants.mouse_width/2, constants.mouse_width, constants.mouse_height)
 
   if next(collider:collisions(mouse_collider)) then

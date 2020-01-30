@@ -96,13 +96,16 @@ simulation.create = function()
     },
     push_pull = 0,
 
-    lives = constants.max_lives
+    lives = constants.max_lives,
+    blood_alpha = 0,
   }
 
   return state
 end
 
 simulation.update = function(state)
+  state.blood_alpha = math.max(state.blood_alpha - 0.05, 0)
+
   local collider = collisions.create_empty()
   collisions.add_all_mice(collider, state)
 
@@ -162,7 +165,7 @@ simulation.update = function(state)
 
 
     for _, trapdoor in pairs(state.trapdoors) do
-      if trapdoor.open and misc_math.point_in_box(
+      if misc_math.point_in_box(
         mouse.pos,
         trapdoor.pos - vector.new(constants.trapdoor_width/2, constants.trapdoor_height/2),
         constants.trapdoor_width,
@@ -170,6 +173,7 @@ simulation.update = function(state)
       then
         if trapdoor.target ~= mouse.infection then
           state.lives = math.max(state.lives - 1, 0)
+          state.blood_alpha = 1
         end
         mouse.active = false
       end
