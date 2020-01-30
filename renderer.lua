@@ -98,7 +98,7 @@ renderer.render_state = function(state)
   love.graphics.clear()
 
   love.graphics.setColor(1, 1, 1)
-  love.graphics.draw(images.room.png,0,0,0,2,2)
+  love.graphics.draw(images.room.png,0,0,0,1,1)
 
   --love.graphics.setColor(1,1,0)
   --love.graphics.rectangle("line", 0, 0, constants.screen_w, constants.clip_top)
