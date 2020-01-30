@@ -10,16 +10,16 @@ constants =
   trapdoor_height = 100,
   mouse_speed = 5,
   mouse_drag = 0.001,
-  spawn_delay = 100,
+  spawn_delay = 60,
 
   mouse_width = 60,
   mouse_height = 20,
 
-  max_push_distance = 150,
+  max_push_distance = 250,
   mouse_drag = 1,
 
-  mouse_x_speed = 1,
-  mouse_y_speed = 1,
+  mouse_x_speed = 5,
+  mouse_y_speed = 3,
 
   max_lives = 10
 }
