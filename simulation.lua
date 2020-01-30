@@ -2,14 +2,43 @@ local misc_math = require("misc_math")
 local vector = require("vector")
 
 
+local activate_mouse = function(state)
+  local next_mouse = table.remove(state.mice_pool,1)
+  table.insert(state.mice,{
+    pos = vector.new(0, math.random(1,constants.screen_h)),
+    infection = next_mouse.infection,
+    active = true,
+    to_pool = false,
+  })
+end
+
+local check_spawn_mouse = function(state)
+  if #state.mice_pool > 0 and state.last_spawn_update + constants.spawn_delay < state.ticks_played  then
+    for k = 1, math.random(1,math.min(4,#state.mice_pool)) do
+      activate_mouse(state)
+    end
+    state.last_spawn_update = state.ticks_played
+  end
+end
+
 local simulation = {}
+
+simulation.add_mice_to_pool = function (state,quantity,type)
+  for k = 1, quantity do
+  table.insert(state.mice_pool, {
+    infection = type
+  })
+  end
+end
 
 simulation.create = function()
   local state =
   {
-    mice =
-    {
-    },
+    ticks_played = 0,
+    last_spawn_update = 0,
+    mice_pool = {},
+
+    mice = {},
 
     trapdoors =
     {
@@ -22,20 +51,10 @@ simulation.create = function()
     push_pull = 0,
   }
 
-  for k=1,100 do
-    table.insert(state.mice,
-      {
-        pos = vector.new(math.random(10,600),math.random(10,600)),
-        direction = vector.new(1,0),
-      })
-  end
-
   return state
 end
 
 simulation.update = function(state)
-  local to_remove = {}
-
   for mouse_index, mouse in pairs(state.mice) do
     mouse.pos.x = mouse.pos.x + constants.mouse_x_speed
 
@@ -70,6 +89,11 @@ simulation.update = function(state)
       mouse.pos.y = mouse.pos.y + push_pull_offset * constants.mouse_y_speed
     end
 
+    if mouse.pos.x >= constants.screen_w then
+      mouse.active = false
+      mouse.to_pool = true
+    end
+
 
     for _, trapdoor in pairs(state.trapdoors) do
       if state.trapdoors_open and misc_math.point_in_box(
@@ -78,16 +102,22 @@ simulation.update = function(state)
         constants.trapdoor_width,
         constants.trapdoor_height)
       then
-        to_remove[mouse_index] = 1
+        mouse.active = false
       end
     end
-
   end
 
-  for mouse_index, _ in pairs(to_remove) do
-    table.remove(state.mice, mouse_index)
+  for mouse_index, mouse in pairs(state.mice) do
+    if mouse.to_pool then
+      table.insert(state.mice_pool,{infection=mouse.infection})
+    end
+    if mouse.active == false then
+      table.remove(state.mice,mouse_index)
+    end
   end
 
+  check_spawn_mouse(state)
+  state.ticks_played = state.ticks_played + 1
 end
 
 return simulation

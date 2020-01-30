@@ -7,13 +7,14 @@ local vector = require('vector')
 --TODO: puzzle generator
 
 
+
 local state
 function love.load()
   math.randomseed(1)
   --math.randomseed(os.time()) UNCOMMENT ME IN FINAL VER
 
   state = simulation.create()
-
+  simulation.add_mice_to_pool(state,50,'healthy')
 end
 
 function love.draw()
