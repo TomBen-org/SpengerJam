@@ -99,9 +99,12 @@ end
 
 function love.mousepressed(x,y,button)
   if not state then
-    state = simulation.create()
-    music:play()
-    elevator_music:stop()
+    if alapati == -100 then
+      state = simulation.create()
+      music:play()
+      elevator_music:stop()
+    end
+    return
   end
 
   if state.push_pull == 0 and button == 1 then
