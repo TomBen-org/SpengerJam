@@ -23,6 +23,8 @@ renderer.render_state = function(state)
     love.graphics.setColor(1, 0, 0)
     love.graphics.circle("fill", mouse.pos.x, mouse.pos.y, constants.mouse_radius)
   end
+
+  love.graphics.print("mice in pool: "..#state.mice_pool,0,15)
 end
 
 return renderer

@@ -7,20 +7,22 @@ local vector = require('vector')
 --TODO: puzzle generator
 
 
+
 local state
 function love.load()
   math.randomseed(1)
   --math.randomseed(os.time()) UNCOMMENT ME IN FINAL VER
 
   state = simulation.create()
+  simulation.add_mice_to_pool(state,50,'healthy')
+
   mouse_state = 0
-  mouse_speed = 3
-  mouse_drag = 0.001
+
   max_push_distance = 150
   mice = {}
-  for k=1,100 do
-    table.insert(mice,{pos=vector.new(math.random(10,600),math.random(10,600)),vector=vector.new(0,0)})
-  end
+  --for k=1,100 do
+  --  table.insert(mice,{pos=vector.new(math.random(10,600),math.random(10,600)),vector=vector.new(0,0)})
+  --end
 end
 
 function love.draw()
