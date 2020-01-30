@@ -153,10 +153,13 @@ renderer.render_state = function(state)
   love.graphics.draw(click_text,x,y)
 
   if state.push_pull == 2 then
+    love.mouse.setVisible(false)
     love.graphics.draw(images.cheese.png,love.mouse.getX()-16,love.mouse.getY()-16)
+  else
+    love.mouse.setVisible(true)
   end
 
-end
+  end
 
 renderer.render_before_game = function(maybe_state)
   love.graphics.setColor(1,1,1)
