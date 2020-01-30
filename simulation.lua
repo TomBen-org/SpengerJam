@@ -80,9 +80,15 @@ simulation.create = function()
     trapdoors =
     {
       {
-        pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, 300),
-        target = 'albino'
-      }
+        pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, 150),
+        target = 'albino',
+        direction = -1,
+      },
+      {
+        pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, 450),
+        target = 'albino',
+        direction = -1,
+      },
     },
 
     trapdoors_open = false,

@@ -6,14 +6,13 @@ local vector = require('vector')
 --TODO: score feedback
 --TODO: lives/fuckups
 --TODO: background image (1280x720)
---TODO: trapdoor animation
 --TODO: trapdoor mouse interaction
 --TODO: two trapdoors, three mouse types
 --TODO: feedback when geting it right and wrong
 
 --BLOAT: background tiles
 --BLOAT: random occasional mouse movement without player interaction
---BLOAT:
+--BLOAT: placeable trapdoors
 
 
 
@@ -21,6 +20,7 @@ local vector = require('vector')
 local state
 function love.load()
   math.randomseed(1)
+  renderer.on_load()
   --math.randomseed(os.time()) UNCOMMENT ME IN FINAL VER
 
   state = simulation.create()
@@ -43,12 +43,22 @@ end
 function love.keypressed(key)
   if key == "space" then
     state.trapdoors_open = true
+    for _, door in pairs(state.trapdoors) do
+      --door.animation:pauseAtStart()
+      door.direction = 1
+      door.animation:resume()
+    end
   end
 end
 
 function love.keyreleased(key)
   if key == "space" then
     state.trapdoors_open = false
+    for _, door in pairs(state.trapdoors) do
+      --door.animation:pauseAtEnd()
+      door.direction = -1
+      door.animation:resume()
+    end
   end
 end
 
@@ -85,6 +95,7 @@ end
 
 local accumulatedDeltaTime = 0
 function love.update(deltaTime)
+  renderer.update(state,deltaTime)
   accumulatedDeltaTime = accumulatedDeltaTime + deltaTime
   for _, mouse in pairs(state.mice) do
     mouse_update(mouse,deltaTime)

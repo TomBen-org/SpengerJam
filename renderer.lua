@@ -11,14 +11,34 @@ local render_mouse = function(mouse)
   love.graphics.circle("fill", mouse.pos.x, mouse.pos.y, constants.mouse_radius)
 end
 
+local render_trapdoor = function(trapdoor)
+  love.graphics.setColor(1, 1, 1)
+  local offset = 128
+  trapdoor.animation:draw(images.trapdoor.png,trapdoor.pos.x-offset,trapdoor.pos.y-offset)
+end
+
 local renderer = {}
 
---image = love.graphics.newImage('graphics/Woodcutter_attack1.png')
---local g = anim8.newGrid(48, 48, image:getWidth(), image:getHeight())
---animation = anim8.newAnimation(g('1-6',1), 0.1)
+renderer.on_load = function()
+  images = {}
+  images.trapdoor = {
+  png = love.graphics.newImage('assets/trapdoor-sheet.png'),
+  grid = anim8.newGrid(256,256,2048,256)
+  }
+end
 
-renderer.render_trapdoor = function(trapdoor)
-
+renderer.update = function(state,dt)
+  for _, trapdoor in pairs(state.trapdoors) do
+    if not trapdoor.animation then
+      trapdoor.animation = anim8.newAnimation(images.trapdoor.grid('1-8',1), 0.08)
+    end
+    trapdoor.animation:update(dt*trapdoor.direction)
+    if trapdoor.animation.position == 8 and trapdoor.direction > 0 then
+      trapdoor.animation:pause()
+    elseif trapdoor.animation.position == 1 and trapdoor.direction < 0 then
+      trapdoor.animation:pause()
+    end
+  end
 end
 
 renderer.render_state = function(state)
@@ -37,11 +57,13 @@ renderer.render_state = function(state)
       mode = "line"
     end
 
-    love.graphics.rectangle(mode,
-      trapdoor.pos.x - constants.trapdoor_width/2,
-      trapdoor.pos.y - constants.trapdoor_height/2,
-      constants.trapdoor_width,
-      constants.trapdoor_height)
+    render_trapdoor(trapdoor)
+    --love.graphics.rectangle("line",
+    --trapdoor.pos.x - constants.trapdoor_width/2,
+    --trapdoor.pos.y - constants.trapdoor_height/2,
+    --constants.trapdoor_width,
+    --constants.trapdoor_height)
+
   end
 
   for _, mouse in pairs(state.mice) do
