@@ -80,6 +80,10 @@ renderer.on_load = function()
   {
     png = love.graphics.newImage("assets/speech-bubble/speech-bubble.png")
   }
+  images.bg =
+  {
+    png = love.graphics.newImage("assets/background/bg.png")
+  }
 end
 
 renderer.update = function(state,dt)
@@ -162,6 +166,7 @@ renderer.render_before_game = function(maybe_state, alapati)
   --love.graphics.print("Click to start", 100, 100)
 
   love.graphics.setColor(1,1,1)
+  love.graphics.draw(images.bg.png, 0, 0)
   love.graphics.draw(images.alapati.png, 100, constants.screen_h - 600 - alapati)
 
 

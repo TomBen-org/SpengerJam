@@ -26,7 +26,7 @@ constants =
 }
 
 function love.conf(t)
-  t.window.title = "MICE"         -- The window title (string)
+  t.window.title = "Alapati!"         -- The window title (string)
   t.window.icon = nil                 -- Filepath to an image to use as the window's icon (string)
   t.window.width = constants.screen_w                -- The window width (number)
   t.window.height = constants.screen_h               -- The window height (number)
