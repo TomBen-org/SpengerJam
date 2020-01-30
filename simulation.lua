@@ -64,6 +64,10 @@ local set_difficulty = function(state)
     constants.mouse_x_speed = 5
     constants.spawn_delay = 150
     state.difficulty = state.difficulty + 1
+  elseif state.difficulty > 10 and state.difficulty*20 < state.score then
+    constants.spawn_delay = constants.spawn_delay * 0.9
+    constants.mouse_x_speed = constants.mouse_x_speed * 1.1
+    state.difficulty = state.difficulty + 1
   end
 
 
