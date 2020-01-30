@@ -2,6 +2,73 @@ local misc_math = require("misc_math")
 local vector = require("vector")
 local collisions = require("collisions")
 
+local set_difficulty = function(state)
+  if state.difficulty == 0 then
+    constants.max_wave = 1
+    constants.mouse_x_speed = 2
+    constants.mouse_y_speed = 3
+    constants.mouse_drag = 1
+    constants.max_push_distance = 250
+    constants.spawn_delay = 120
+    state.difficulty = state.difficulty + 1
+  elseif state.difficulty == 1 and state.score > 10 then
+    constants.max_wave = 1
+    constants.mouse_x_speed = 1
+    constants.mouse_y_speed = 0.5
+    constants.spawn_delay = 100
+    state.difficulty = state.difficulty + 1
+  elseif state.difficulty == 2 and state.score > 20 then
+    constants.max_wave = 1
+    constants.mouse_x_speed = 3
+    constants.mouse_y_speed = 1
+    constants.spawn_delay = 80
+    state.difficulty = state.difficulty + 1
+  elseif state.difficulty == 3 and state.score > 30 then
+    constants.max_wave = 2
+    constants.mouse_x_speed = 3
+    constants.mouse_y_speed = 2
+    constants.spawn_delay = 120
+    state.difficulty = state.difficulty + 1
+  elseif state.difficulty == 4 and state.score > 40 then
+    constants.max_wave = 2
+    constants.mouse_x_speed = 3
+    constants.spawn_delay = 100
+    state.difficulty = state.difficulty + 1
+  elseif state.difficulty == 5 and state.score > 50 then
+    constants.max_wave = 1
+    constants.mouse_x_speed = 4
+    constants.spawn_delay = 40
+    state.difficulty = state.difficulty + 1
+  elseif state.difficulty == 6 and state.score > 70 then
+    constants.max_wave = 1
+    constants.mouse_x_speed = 4
+    constants.spawn_delay = 100
+    state.difficulty = state.difficulty + 1
+  elseif state.difficulty == 7 and state.score > 90 then
+    constants.max_wave = 4
+    constants.mouse_x_speed = 2
+    constants.spawn_delay = 300
+    state.difficulty = state.difficulty + 1
+  elseif state.difficulty == 8 and state.score > 110 then
+    constants.max_wave = 1
+    constants.mouse_x_speed = 3
+    constants.spawn_delay = 30
+    state.difficulty = state.difficulty + 1
+  elseif state.difficulty == 9 and state.score > 150 then
+    constants.max_wave = 3
+    constants.mouse_x_speed = 3
+    constants.spawn_delay = 200
+    state.difficulty = state.difficulty + 1
+  elseif state.difficulty == 10 and state.score > 200 then
+    constants.max_wave = 2
+    constants.mouse_x_speed = 5
+    constants.spawn_delay = 150
+    state.difficulty = state.difficulty + 1
+  end
+
+
+end
+
 local function shuffle(t)
     local rand = math.random
     assert(t, "table.shuffle() expected a table, got nil")
@@ -45,8 +112,8 @@ end
 local check_spawn_mouse = function(state)
   --if #state.mice_pool > 0 and state.last_spawn_update + constants.spawn_delay < state.ticks_played  then
   if state.last_spawn_update + constants.spawn_delay < state.ticks_played  then
-    local spacing = math.random(1,4) * 20
-    local group_size = math.random(1,math.min(1,#state.mice_pool))
+    local spacing = math.random(1,4) * 60
+    local group_size = math.random(1,constants.max_wave)
     local starting_y = math.random(constants.clip_top,constants.screen_h-constants.clip_bottom-(spacing*group_size))
 
     local collider = collisions.create_empty()
@@ -55,7 +122,7 @@ local check_spawn_mouse = function(state)
     end
 
     for k = 1, group_size do
-      activate_mouse(state, collider, math.random(-60,-10),starting_y + k*spacing)
+      activate_mouse(state, collider, math.random(-100,-30),starting_y + k*spacing)
     end
     state.last_spawn_update = state.ticks_played
   end
@@ -108,12 +175,14 @@ simulation.create = function()
     infected_remaining = 0,
     blood_alpha = 0,
     score = 0,
+    difficulty = 0,
   }
 
   return state
 end
 
 simulation.update = function(state)
+  set_difficulty(state)
   state.blood_alpha = math.max(state.blood_alpha - 0.05, 0)
 
   local collider = collisions.create_empty()
@@ -180,6 +249,7 @@ simulation.update = function(state)
       else
         state.score = state.score + 1
         state.infected_remaining = state.infected_remaining - 1
+        set_difficulty(state)
       end
     end
 

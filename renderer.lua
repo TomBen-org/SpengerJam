@@ -132,6 +132,7 @@ renderer.render_state = function(state)
   draw_text_box("Left click for cheese",(constants.screen_w/2),constants.screen_h-50)
   draw_text_box("Lives: "..state.lives,100,30)
   draw_text_box("Score: "..state.score,300,30)
+  draw_text_box("Difficulty: "..state.difficulty,500,30)
 
   if state.push_pull == 2 then
     love.mouse.setVisible(false)
