@@ -1,18 +1,16 @@
-local vector_light = require("vector-light")
+local vector = require("vector")
 
 local misc_math = {}
 
 
-misc_math.point_in_box = function(x, y, bx, by, w, h)
-  return x >= bx and x <= bx + w and y >= by and y <= by + h
+misc_math.point_in_box = function(point, box_top_left, w, h)
+  return point.x>= box_top_left.x and point.x <= box_top_left.x + w and point.y >= box_top_left.y and point.y <= box_top_left.y + h
 end
 
 misc_math.random_direction_vector = function()
-  local x = math.random()*2-1
-  local y =math.random()*2-1
-  x, y = vector_light.normalize(x, y)
-
-  return {x, y}
+  local vec = vector.new(math.random()*2-1, math.random()*2-1)
+  vec:normalizeInplace()
+  return vec
 end
 
 return misc_math

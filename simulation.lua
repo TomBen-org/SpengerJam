@@ -1,4 +1,6 @@
 local misc_math = require("misc_math")
+local vector = require("vector")
+
 
 local simulation = {}
 
@@ -8,17 +10,17 @@ simulation.create = function()
     mice =
     {
       {
-        pos = {100, 100},
+        pos = vector.new(100, 100),
 
         speed = 5,
-        direction = {1, 0},
+        direction = vector.new(1, 0),
       }
     },
 
     trapdoors =
     {
       {
-        pos = { constants.screen_w - constants.trapdoor_width - 100, 300 }
+        pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, 300)
       }
     },
 
@@ -30,13 +32,9 @@ simulation.update = function(state)
   local to_remove = {}
 
   for mouse_index, mouse in pairs(state.mice) do
-    local newpos =
-    {
-      mouse.pos[1] + mouse.direction[1] * mouse.speed,
-      mouse.pos[2] + mouse.direction[2] * mouse.speed,
-    }
+    local newpos = mouse.pos + mouse.direction * mouse.speed
 
-    if not misc_math.point_in_box(newpos[1], newpos[2], 0, 0, constants.screen_w, constants.screen_h) then
+    if not misc_math.point_in_box(newpos, vector.zero, constants.screen_w, constants.screen_h) then
       mouse.direction = misc_math.random_direction_vector()
     else
       mouse.pos = newpos
@@ -44,10 +42,8 @@ simulation.update = function(state)
 
     for _, trapdoor in pairs(state.trapdoors) do
       if state.trapdoors_open and misc_math.point_in_box(
-        mouse.pos[1],
-        mouse.pos[2],
-        trapdoor.pos[1] - constants.trapdoor_width/2,
-        trapdoor.pos[2] - constants.trapdoor_height/2,
+        mouse.pos,
+        trapdoor.pos - vector.new(constants.trapdoor_width/2, constants.trapdoor_height/2),
         constants.trapdoor_width,
         constants.trapdoor_height)
       then

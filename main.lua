@@ -3,7 +3,6 @@ local renderer = require("renderer")
 local vector = require('vector')
 
 --TODO: mice not collide
---TODO: trapdoor eats mice
 --TODO: mice pool (puzzle)
 --TODO: puzzle generator
 
@@ -80,6 +79,7 @@ end
 local mouse_update = function(mouse,dt)
   local relative_mouse_vector = vector.new(love.mouse.getX(),love.mouse.getY())
   relative_mouse_vector = relative_mouse_vector - mouse.pos
+
   local distance = max_push_distance-(math.min(relative_mouse_vector:len(),max_push_distance))
   if distance < 10 then
     relative_mouse_vector = vector.new(0,0)
@@ -94,6 +94,7 @@ local mouse_update = function(mouse,dt)
     --zero
     relative_mouse_vector = vector.new(0,0)
   end
+
   mouse.vector = mouse.vector + relative_mouse_vector
   mouse.pos = mouse.pos + mouse.vector*dt*mouse_speed*math.sqrt(distance)
   mouse.vector = mouse.vector * dt * mouse_drag

@@ -13,15 +13,15 @@ renderer.render_state = function(state)
     end
 
     love.graphics.rectangle(mode,
-      trapdoor.pos[1] - constants.trapdoor_width/2,
-      trapdoor.pos[2] - constants.trapdoor_height/2,
+      trapdoor.pos.x - constants.trapdoor_width/2,
+      trapdoor.pos.y - constants.trapdoor_height/2,
       constants.trapdoor_width,
       constants.trapdoor_height)
   end
 
   for _, mouse in pairs(state.mice) do
     love.graphics.setColor(1, 0, 0)
-    love.graphics.circle("fill", mouse.pos[1], mouse.pos[2], constants.mouse_radius)
+    love.graphics.circle("fill", mouse.pos.x, mouse.pos.y, constants.mouse_radius)
   end
 end
 
