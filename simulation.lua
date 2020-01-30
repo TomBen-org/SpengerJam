@@ -177,14 +177,16 @@ simulation.create = function()
         pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, constants.clip_top + constants.trapdoor_height/2 + 50),
         direction = -1,
         open = false,
-        key = 'lshift'
+        key = 'lshift',
+        last_update = 0,
       },
       {
         pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, constants.screen_h - constants.clip_bottom - constants.trapdoor_height/2 - 50),
         target = 'albino',
         direction = -1,
         open = false,
-        key = 'lctrl'
+        key = 'lctrl',
+        last_update = 0,
       },
     },
     push_pull = 0,
@@ -205,6 +207,15 @@ simulation.update = function(state)
 
   local collider = collisions.create_empty()
   collisions.add_all_mice(collider, state)
+
+  for _, door in pairs(state.trapdoors) do
+    if state.ticks_played > door.last_update + 100 then
+      door.open = true
+      door.direction = 1
+      door.animation:resume()
+      door.last_update = state.ticks_played
+    end
+  end
 
   for mouse_index, mouse in pairs(state.mice) do
     mouse.heart = false
@@ -279,6 +290,11 @@ simulation.update = function(state)
         constants.trapdoor_width,
         constants.trapdoor_height)
       then
+        trapdoor.open = false
+        trapdoor.direction = -1
+        trapdoor.animation:resume()
+        trapdoor.last_update = state.ticks_played
+
         if trapdoor.target ~= mouse.infection then
           state.lives = math.max(state.lives - 1, 0)
           state.blood_alpha = 1
