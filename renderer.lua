@@ -21,6 +21,9 @@ local render_mouse = function(mouse)
       mouse.animation:draw(images.rat_zombie.png,mouse.pos.x-ox,mouse.pos.y-oy,0,scale,scale)
     end
   end
+  if mouse.heart then
+    love.graphics.draw(images.heart.png, mouse.pos.x - 15, mouse.pos.y - 70)
+  end
   --love.graphics.rectangle("line", mouse.pos.x-constants.mouse_width/2, mouse.pos.y-constants.mouse_width/2, constants.mouse_width, constants.mouse_height)
 end
 
@@ -64,6 +67,10 @@ renderer.on_load = function()
   }
   images.cheese = {
     png = love.graphics.newImage('assets/cheese.png')
+  }
+  images.heart =
+  {
+    png = love.graphics.newImage("assets/heart-icon/heart pixel art 32x32.png")
   }
 end
 

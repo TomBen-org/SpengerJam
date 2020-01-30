@@ -30,6 +30,7 @@ local activate_mouse = function(state, collider, x,y)
       active = true,
       to_pool = false,
       animation = nil,
+      heart = false,
     }
     if collisions.try_add_mouse(collider, new_mouse) then
       table.insert(state.mice, new_mouse)
@@ -117,6 +118,7 @@ simulation.update = function(state)
   collisions.add_all_mice(collider, state)
 
   for mouse_index, mouse in pairs(state.mice) do
+    mouse.heart = false
     local new_mouse_pos = vector.new(mouse.pos.x + constants.mouse_x_speed, mouse.pos.y)
 
     local target_y_position = love.mouse.getY()
@@ -151,8 +153,9 @@ simulation.update = function(state)
     }
 
 
-    if (state.push_pull == 2 or push_pull_offset == 0) and mouse.pos.x < love.mouse.getX() then
+    if state.push_pull == 2 and distance > 0 and mouse.pos.x < love.mouse.getX() then
       table.insert(try_place_positions, 1, vector.new(new_mouse_pos.x, mouse.pos.y + push_pull_offset * constants.mouse_y_speed))
+      mouse.heart = true
     end
 
     -- don't collide with self

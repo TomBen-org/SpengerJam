@@ -2,12 +2,8 @@ local simulation = require("simulation")
 local renderer = require("renderer")
 local vector = require('vector')
 
---TODO: puzzle generator
 --TODO: score feedback graphics
 --TODO: lives/fuckups graphics
---TODO: trapdoor mouse interaction
---TODO: feedback when getting it right and wrong
---TODO: mouse graphics
 
 --BLOAT: background tiles
 --BLOAT: random occasional mouse movement without player interaction
