@@ -7,6 +7,12 @@ constants =
   trapdoor_height = 100,
 
   mouse_radius = 20,
+
+  max_push_distance = 150,
+  mouse_drag = 1,
+
+  mouse_x_speed = 1,
+  mouse_y_speed = 1,
 }
 
 function love.conf(t)

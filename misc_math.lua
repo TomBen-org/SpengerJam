@@ -13,4 +13,8 @@ misc_math.random_direction_vector = function()
   return vec
 end
 
+misc_math.lerp = function(a, b, alpha)
+  return a * alpha + b * (1-alpha)
+end
+
 return misc_math

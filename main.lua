@@ -13,25 +13,14 @@ function love.load()
   --math.randomseed(os.time()) UNCOMMENT ME IN FINAL VER
 
   state = simulation.create()
-  mouse_state = 0
-  mouse_speed = 3
-  mouse_drag = 0.001
-  max_push_distance = 150
-  mice = {}
-  for k=1,100 do
-    table.insert(mice,{pos=vector.new(math.random(10,600),math.random(10,600)),vector=vector.new(0,0)})
-  end
+
 end
 
 function love.draw()
   renderer.render_state(state)
 
-  love.graphics.print("mouse_state: "..mouse_state,0,0)
   love.graphics.setColor(0,125,30)
-  for _, mouse in pairs(mice) do
-    love.graphics.circle("fill",mouse.pos.x,mouse.pos.y,5,15)
-  end
-  love.graphics.setColor(0,0,0)
+  love.graphics.print("state.push_pull: "..state.push_pull,0,0)
 end
 
 function love.resize()
@@ -57,18 +46,18 @@ function love.wheelmoved(x,y)
 end
 
 function love.mousepressed(x,y,button)
-  if mouse_state == 0 and button == 2 then
-    mouse_state = 2
-  elseif mouse_state == 0 and button == 1 then
-    mouse_state = 1
+  if state.push_pull == 0 and button == 2 then
+    state.push_pull = 2
+  elseif state.push_pull == 0 and button == 1 then
+    state.push_pull = 1
   end
 end
 
 function love.mousereleased(x,y,button)
-  if mouse_state == 2 and button == 2 then
-    mouse_state = 0
-  elseif mouse_state == 1 and button == 1 then
-    mouse_state = 0
+  if state.push_pull == 2 and button == 2 then
+    state.push_pull = 0
+  elseif state.push_pull == 1 and button == 1 then
+    state.push_pull = 0
   end
 end
 
@@ -77,33 +66,13 @@ function love.quit()
 end
 
 local mouse_update = function(mouse,dt)
-  local relative_mouse_vector = vector.new(love.mouse.getX(),love.mouse.getY())
-  relative_mouse_vector = relative_mouse_vector - mouse.pos
 
-  local distance = max_push_distance-(math.min(relative_mouse_vector:len(),max_push_distance))
-  if distance < 10 then
-    relative_mouse_vector = vector.new(0,0)
-  end
-  relative_mouse_vector = relative_mouse_vector * dt * mouse_speed
-  if mouse_state == 1 then
-    --push away
-    relative_mouse_vector = relative_mouse_vector * -1
-  elseif mouse_state == 2 then
-    --pull towards
-  else
-    --zero
-    relative_mouse_vector = vector.new(0,0)
-  end
-
-  mouse.vector = mouse.vector + relative_mouse_vector
-  mouse.pos = mouse.pos + mouse.vector*dt*mouse_speed*math.sqrt(distance)
-  mouse.vector = mouse.vector * dt * mouse_drag
 end
 
 local accumulatedDeltaTime = 0
 function love.update(deltaTime)
   accumulatedDeltaTime = accumulatedDeltaTime + deltaTime
-  for _, mouse in pairs(mice) do
+  for _, mouse in pairs(state.mice) do
     mouse_update(mouse,deltaTime)
   end
   local tickTime = 1/60
