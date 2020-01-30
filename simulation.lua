@@ -39,8 +39,8 @@ end
 local check_spawn_mouse = function(state)
   if #state.mice_pool > 0 and state.last_spawn_update + constants.spawn_delay < state.ticks_played  then
     local spacing = math.random(1,4) * 20
-    local group_size = math.random(1,math.min(4,#state.mice_pool))
-    local starting_y = math.random(10,constants.screen_h-(spacing*group_size))
+    local group_size = math.random(1,math.min(1,#state.mice_pool))
+    local starting_y = math.random(constants.clip_top,constants.screen_h-constants.clip_bottom-(spacing*group_size))
 
     local collider = collisions.create_empty()
     for _, mouse in pairs(state.mice) do
@@ -141,7 +141,7 @@ simulation.update = function(state)
     }
 
 
-    if distance > 0 then
+    if (state.push_pull == 2 or push_pull_offset == 0) and mouse.pos.x < love.mouse.getX() then
       table.insert(try_place_positions, 1, vector.new(new_mouse_pos.x, mouse.pos.y + push_pull_offset * constants.mouse_y_speed))
     end
 
@@ -162,7 +162,7 @@ simulation.update = function(state)
 
 
     for _, trapdoor in pairs(state.trapdoors) do
-      if misc_math.point_in_box(
+      if trapdoor.open and misc_math.point_in_box(
         mouse.pos,
         trapdoor.pos - vector.new(constants.trapdoor_width/2, constants.trapdoor_height/2),
         constants.trapdoor_width,

@@ -87,7 +87,7 @@ renderer.render_state = function(state)
 
 
   love.graphics.setColor(0, 1, 0, 0.2)
-  love.graphics.circle("fill", love.mouse.getX(), love.mouse.getY(), constants.max_push_distance)
+  --love.graphics.circle("fill", love.mouse.getX(), love.mouse.getY(), constants.max_push_distance)
 
 
 
