@@ -105,9 +105,9 @@ function love.mousepressed(x,y,button)
     music:play()
   end
 
-  if state.push_pull == 0 and button == 2 then
+  if state.push_pull == 0 and button == 1 then
     state.push_pull = 2
-  elseif state.push_pull == 0 and button == 1 then
+  elseif state.push_pull == 0 and button == 2 then
     state.push_pull = 1
   end
 end
@@ -117,9 +117,9 @@ function love.mousereleased(x,y,button)
     return
   end
 
-  if state.push_pull == 2 and button == 2 then
+  if state.push_pull == 2 and button == 1 then
     state.push_pull = 0
-  elseif state.push_pull == 1 and button == 1 then
+  elseif state.push_pull == 1 and button == 2 then
     state.push_pull = 0
   end
 end
