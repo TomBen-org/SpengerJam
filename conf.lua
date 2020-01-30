@@ -5,7 +5,7 @@ constants =
 
   trapdoor_width = 100,
   trapdoor_height = 100,
-  mouse_speed = 3,
+  mouse_speed = 5,
   mouse_drag = 0.001,
   spawn_delay = 100,
 

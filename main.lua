@@ -2,9 +2,19 @@ local simulation = require("simulation")
 local renderer = require("renderer")
 local vector = require('vector')
 
---TODO: mice not collide
---TODO: mice pool (puzzle)
+--TODO: mice not collide with edge or each other
 --TODO: puzzle generator
+--TODO: score feedback
+--TODO: lives/fuckups
+--TODO: background image (1280x720)
+--TODO: trapdoor animation
+--TODO: trapdoor mouse interaction
+--TODO: two trapdoors, three mouse types
+
+--BLOAT: background tiles
+--BLOAT: random occasional mouse movement without player interaction
+--BLOAT:
+
 
 
 

@@ -2,10 +2,10 @@ local misc_math = require("misc_math")
 local vector = require("vector")
 
 
-local activate_mouse = function(state)
+local activate_mouse = function(state,x,y)
   local next_mouse = table.remove(state.mice_pool,1)
   table.insert(state.mice,{
-    pos = vector.new(0, math.random(1,constants.screen_h)),
+    pos = vector.new(x, y),
     infection = next_mouse.infection,
     active = true,
     to_pool = false,
@@ -14,8 +14,11 @@ end
 
 local check_spawn_mouse = function(state)
   if #state.mice_pool > 0 and state.last_spawn_update + constants.spawn_delay < state.ticks_played  then
-    for k = 1, math.random(1,math.min(4,#state.mice_pool)) do
-      activate_mouse(state)
+    local spacing = math.random(1,4) * 20
+    local group_size = math.random(1,math.min(4,#state.mice_pool))
+    local starting_y = math.random(10,constants.screen_h-(spacing*group_size))
+    for k = 1, group_size do
+      activate_mouse(state,math.random(-60,-10),starting_y + k*spacing)
     end
     state.last_spawn_update = state.ticks_played
   end

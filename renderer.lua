@@ -2,7 +2,6 @@ local anim8 = require 'anim8'
 
 local renderer = {}
 
-
 --image = love.graphics.newImage('graphics/Woodcutter_attack1.png')
 --local g = anim8.newGrid(48, 48, image:getWidth(), image:getHeight())
 --animation = anim8.newAnimation(g('1-6',1), 0.1)
@@ -28,7 +27,7 @@ renderer.render_state = function(state)
 
   for _, mouse in pairs(state.mice) do
     love.graphics.setColor(1, 0, 0)
-    love.graphics.circle("fill", mouse.pos[1], mouse.pos[2], constants.mouse_radius)
+    love.graphics.circle("fill", mouse.pos.x, mouse.pos.y, constants.mouse_radius)
   end
 
   love.graphics.print("mice in pool: "..#state.mice_pool,0,15)
