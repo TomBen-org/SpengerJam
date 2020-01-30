@@ -19,6 +19,8 @@ constants =
 
   mouse_x_speed = 1,
   mouse_y_speed = 1,
+
+  max_lives = 10
 }
 
 function love.conf(t)

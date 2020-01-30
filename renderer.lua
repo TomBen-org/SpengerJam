@@ -13,6 +13,14 @@ end
 
 local render_trapdoor = function(trapdoor)
   love.graphics.setColor(1, 1, 1)
+
+  if trapdoor.target == "zombie" then
+    love.graphics.setColor(0.5,1,0.5)
+  end
+  if trapdoor.target == "albino" then
+    love.graphics.setColor(1,0.5,0.5)
+  end
+
   local offset = 128
   trapdoor.animation:draw(images.trapdoor.png,trapdoor.pos.x-offset,trapdoor.pos.y-offset)
 end
@@ -70,7 +78,9 @@ renderer.render_state = function(state)
     render_mouse(mouse)
   end
 
+  love.graphics.setColor(0, 0, 0)
   love.graphics.print("mice in pool: "..#state.mice_pool,0,15)
+  love.graphics.print("lives: ".. state.lives .. "/" .. constants.max_lives,0,25)
 end
 
 return renderer

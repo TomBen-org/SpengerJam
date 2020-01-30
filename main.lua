@@ -3,8 +3,8 @@ local renderer = require("renderer")
 local vector = require('vector')
 
 --TODO: puzzle generator
---TODO: score feedback
---TODO: lives/fuckups
+--TODO: score feedback graphics
+--TODO: lives/fuckups graphics
 --TODO: background image (1280x720)
 --TODO: trapdoor mouse interaction
 --TODO: two trapdoors, three mouse types

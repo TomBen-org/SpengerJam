@@ -81,7 +81,7 @@ simulation.create = function()
     {
       {
         pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, 150),
-        target = 'albino',
+        target = 'zombie',
         direction = -1,
       },
       {
@@ -93,6 +93,8 @@ simulation.create = function()
 
     trapdoors_open = false,
     push_pull = 0,
+
+    lives = constants.max_lives
   }
 
   return state
@@ -165,6 +167,9 @@ simulation.update = function(state)
         constants.trapdoor_width,
         constants.trapdoor_height)
       then
+        if trapdoor.target ~= mouse.infection then
+          state.lives = math.max(state.lives - 1, 0)
+        end
         mouse.active = false
       end
     end
