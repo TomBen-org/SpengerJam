@@ -8,20 +8,20 @@ local render_mouse = function(mouse)
   elseif mouse.infection == 'zombie' then
     love.graphics.setColor(0.2, 1, 0.2)
   end
-  local ox = 0
-  local oy = 0
-  local scale = 2
+  local ox = 70
+  local oy = 84
+  local scale = 1
   love.graphics.setColor(1,1,1)
   if mouse.animation then
     if mouse.infection == 'healthy' then
       mouse.animation:draw(images.rat_normal.png,mouse.pos.x-ox,mouse.pos.y-oy,0,scale,scale)
     elseif mouse.infection == 'albino' then
-      mouse.animation:draw(images.rat_albino.png,mouse.pos.x-ox,mouse.pos.y-oy)
+      mouse.animation:draw(images.rat_albino.png,mouse.pos.x-ox,mouse.pos.y-oy,0,scale,scale)
     elseif mouse.infection == 'zombie' then
-      mouse.animation:draw(images.rat_zombie.png,mouse.pos.x-ox,mouse.pos.y-oy)
+      mouse.animation:draw(images.rat_zombie.png,mouse.pos.x-ox,mouse.pos.y-oy,0,scale,scale)
     end
   end
-  love.graphics.rectangle("line", mouse.pos.x-constants.mouse_width/2, mouse.pos.y-constants.mouse_width/2, constants.mouse_width, constants.mouse_height)
+  --love.graphics.rectangle("line", mouse.pos.x-constants.mouse_width/2, mouse.pos.y-constants.mouse_width/2, constants.mouse_width, constants.mouse_height)
 end
 
 local render_trapdoor = function(trapdoor)
@@ -35,7 +35,7 @@ local render_trapdoor = function(trapdoor)
   end
 
   local offset = 128
-  trapdoor.animation:draw(images.trapdoor.png,trapdoor.pos.x-offset,trapdoor.pos.y-offset)
+  trapdoor.animation:draw(images.trapdoor.png,trapdoor.pos.x-offset,trapdoor.pos.y-offset,0,2,2)
 end
 
 local renderer = {}
@@ -44,22 +44,22 @@ renderer.on_load = function()
   images = {}
   images.trapdoor = {
   png = love.graphics.newImage('assets/trapdoor-sheet.png'),
-  grid = anim8.newGrid(256,256,2048,256)
+  grid = anim8.newGrid(128,128,128*8,128)
   }
   images.room = {
     png = love.graphics.newImage('assets/floor/floor.png')
   }
   images.rat_normal = {
     png = love.graphics.newImage('assets/rat-normal.png'),
-    grid = anim8.newGrid(64,64,64*16,64)
+    grid = anim8.newGrid(128,128,128*16,128)
   }
   images.rat_albino = {
     png = love.graphics.newImage('assets/rat-albino.png'),
-    grid = anim8.newGrid(384,384,384*8,384)
+    grid = anim8.newGrid(128,128,128*16,128)
   }
   images.rat_zombie = {
     png = love.graphics.newImage('assets/rat-zombie.png'),
-    grid = anim8.newGrid(384,384,384*8,384)
+    grid = anim8.newGrid(128,128,128*16,128)
   }
 end
 
@@ -82,11 +82,11 @@ renderer.update = function(state,dt)
         mouse.animation = anim8.newAnimation(images.rat_normal.grid('1-16',1), 0.04)
         mouse.animation:gotoFrame(math.random(1,16))
       elseif mouse.infection == 'albino' then
-        mouse.animation = anim8.newAnimation(images.rat_albino.grid('1-8',1), 0.08)
-        mouse.animation:gotoFrame(math.random(1,8))
+        mouse.animation = anim8.newAnimation(images.rat_albino.grid('1-16',1), 0.04)
+        mouse.animation:gotoFrame(math.random(1,16))
       elseif mouse.infection == 'zombie' then
-        mouse.animation = anim8.newAnimation(images.rat_zombie.grid('1-8',1), 0.08)
-        mouse.animation:gotoFrame(math.random(1,8))
+        mouse.animation = anim8.newAnimation(images.rat_zombie.grid('1-16',1), 0.04)
+        mouse.animation:gotoFrame(math.random(1,16))
       end
     end
     mouse.animation:update(dt)
