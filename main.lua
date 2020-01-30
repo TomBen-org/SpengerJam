@@ -41,9 +41,6 @@ function love.draw()
     return
   end
   renderer.render_state(state)
-
-  love.graphics.setColor(0,125,30)
-  love.graphics.print("state.push_pull: "..state.push_pull,0,0)
 end
 
 function love.resize()

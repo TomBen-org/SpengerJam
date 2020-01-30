@@ -104,53 +104,34 @@ renderer.update = function(state,dt)
   end
 end
 
+local draw_text_box = function(text,x,y)
+  local click_text = love.graphics.newText(the_font,text)
+  love.graphics.setColor(0,0,0)
+  local margin = 15
+  love.graphics.rectangle("fill",x-margin-(click_text:getWidth()/2),y-margin,click_text:getWidth()+margin*2,click_text:getHeight()+margin*2)
+  love.graphics.setColor(1,1,1)
+  love.graphics.draw(click_text,x-(click_text:getWidth()/2),y)
+end
+
 renderer.render_state = function(state)
 
   love.graphics.setColor(1, 1, 1)
   love.graphics.draw(images.room.png,0,0,0,1,1)
 
-
   for _, trapdoor in pairs(state.trapdoors) do
     love.graphics.setColor(0, 1, 0)
     render_trapdoor(trapdoor)
-    --love.graphics.setColor(1,1,1)
-    --love.graphics.rectangle("line",
-    --trapdoor.pos.x - constants.trapdoor_width/2,
-    --trapdoor.pos.y - constants.trapdoor_height/2,
-    --constants.trapdoor_width,
-    --constants.trapdoor_height)
-
   end
 
   for _, mouse in pairs(state.mice) do
     render_mouse(mouse)
   end
-
-  love.graphics.setColor(1, 1, 1)
-  love.graphics.print("score: "..state.score,0,15)
-  love.graphics.print("lives: ".. state.lives .. "/" .. constants.max_lives,0,25)
-
-
-  love.graphics.setColor(0, 1, 0, 0.2)
-  --love.graphics.circle("fill", love.mouse.getX(), love.mouse.getY(), constants.max_push_distance)
-
-
-
-  --love.graphics.setColor(1,1,0, 0.8)
-  --love.graphics.rectangle("fill", 0, 0, constants.screen_w, constants.clip_top)
-  --love.graphics.rectangle("fill", 0, constants.screen_h - constants.clip_bottom, constants.screen_w, constants.clip_bottom)
-
-
   love.graphics.setColor(1, 0, 0, state.blood_alpha)
   love.graphics.rectangle("fill", 0, 0, constants.screen_w, constants.screen_h)
 
-  local click_text = love.graphics.newText(the_font,"Left click for cheese")
-  love.graphics.setColor(0,0,0)
-  local margin = 15
-  local x,y = (constants.screen_w/2)-(click_text:getWidth()/2),constants.screen_h-50
-  love.graphics.rectangle("fill",x-margin,y-margin,click_text:getWidth()+margin*2,click_text:getHeight()+margin*2)
-  love.graphics.setColor(1,1,1)
-  love.graphics.draw(click_text,x,y)
+  draw_text_box("Left click for cheese",(constants.screen_w/2),constants.screen_h-50)
+  draw_text_box("Lives: "..state.lives,100,30)
+  draw_text_box("Score: "..state.score,300,30)
 
   if state.push_pull == 2 then
     love.mouse.setVisible(false)

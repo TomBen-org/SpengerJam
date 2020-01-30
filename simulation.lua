@@ -69,10 +69,11 @@ end
 
 simulation.add_mice_to_pool = function (state,quantity,type)
   for k = 1, quantity do
-  table.insert(state.mice_pool, {
-    infection = type
-  })
+    table.insert(state.mice_pool, {
+      infection = type
+    })
   end
+  state.infected_remaining = state.infected_remaining + quantity
 end
 
 simulation.create = function()
@@ -104,6 +105,7 @@ simulation.create = function()
     push_pull = 0,
 
     lives = constants.max_lives,
+    infected_remaining = 0,
     blood_alpha = 0,
     score = 0,
   }
@@ -177,6 +179,7 @@ simulation.update = function(state)
         state.blood_alpha = 1
       else
         state.score = state.score + 1
+        state.infected_remaining = state.infected_remaining - 1
       end
     end
 
