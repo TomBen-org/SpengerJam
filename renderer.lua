@@ -8,7 +8,7 @@ local render_mouse = function(mouse)
   elseif mouse.infection == 'zombie' then
     love.graphics.setColor(0.2, 1, 0.2)
   end
-  love.graphics.rectangle("fill", mouse.pos.x, mouse.pos.y, constants.mouse_width, constants.mouse_height)
+  love.graphics.rectangle("fill", mouse.pos.x-constants.mouse_width/2, mouse.pos.y-constants.mouse_width/2, constants.mouse_width, constants.mouse_height)
 end
 
 local render_trapdoor = function(trapdoor)
