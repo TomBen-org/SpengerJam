@@ -1,3 +1,5 @@
 music: http://www.orangefreesounds.com/elevator-music/ and https://www.youtube.com/watch?v=vTIIMJ9tUc8
-
+photograph of Alapati Venkatramaiah: https://en.wikipedia.org/wiki/Alapati_Venkataramaiah#/media/File:Alapati_Venkatramaiah1.jpg
 cheese icon: https://opengameart.org/content/cartoon-food
+heart icon: https://opengameart.org/content/heart-pixel-art
+textures: https://texturehaven.com/tex/?c=sandstone&t=sandstone_blocks_08 https://texturehaven.com/tex/?c=rock&t=castle_wall_varriation https://texturehaven.com/tex/?c=wood&t=rough_wood
