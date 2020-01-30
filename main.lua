@@ -42,25 +42,41 @@ function love.resize()
 end
 
 function love.keypressed(key)
-  if key == "space" then
-    state.trapdoors_open = true
-    for _, door in pairs(state.trapdoors) do
-      --door.animation:pauseAtStart()
+  for _, door in pairs(state.trapdoors) do
+    if door.key == key then
+      door.open = true
       door.direction = 1
       door.animation:resume()
     end
   end
+
+  --if key == "space" then
+  --  state.trapdoors_open = true
+  --  for _, door in pairs(state.trapdoors) do
+  --    --door.animation:pauseAtStart()
+  --    door.direction = 1
+  --    door.animation:resume()
+  --  end
+  --end
 end
 
 function love.keyreleased(key)
-  if key == "space" then
-    state.trapdoors_open = false
-    for _, door in pairs(state.trapdoors) do
-      --door.animation:pauseAtEnd()
+  for _, door in pairs(state.trapdoors) do
+    if door.key == key then
+      door.open = false
       door.direction = -1
       door.animation:resume()
     end
   end
+
+  --if key == "space" then
+  --  state.trapdoors_open = false
+  --  for _, door in pairs(state.trapdoors) do
+  --    --door.animation:pauseAtEnd()
+  --    door.direction = -1
+  --    door.animation:resume()
+  --  end
+  --end
 end
 
 function love.mousemoved(x,y)

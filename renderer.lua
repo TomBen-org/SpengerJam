@@ -33,6 +33,9 @@ renderer.on_load = function()
   png = love.graphics.newImage('assets/trapdoor-sheet.png'),
   grid = anim8.newGrid(256,256,2048,256)
   }
+  images.room = {
+    png = love.graphics.newImage('assets/floor/floor.png')
+  }
 end
 
 renderer.update = function(state,dt)
@@ -53,11 +56,20 @@ renderer.render_state = function(state)
   love.graphics.setColor(0.5,0.5,0.5)
   love.graphics.clear()
 
-  love.graphics.setColor(1,1,0)
-  love.graphics.rectangle("fill", 0, 0, constants.screen_w, constants.clip_top)
-  love.graphics.rectangle("fill", 0, constants.screen_h - constants.clip_bottom, constants.screen_w, constants.clip_bottom)
+  love.graphics.setColor(1, 1, 1)
+  love.graphics.draw(images.room.png,0,0)
+
+  --love.graphics.setColor(1,1,0)
+  --love.graphics.rectangle("line", 0, 0, constants.screen_w, constants.clip_top)
+  --love.graphics.rectangle("line", 0, constants.screen_h - constants.clip_bottom, constants.screen_w, constants.clip_bottom)
+
+
 
   for _, trapdoor in pairs(state.trapdoors) do
+
+
+
+
     love.graphics.setColor(0, 1, 0)
 
     local mode = "fill"

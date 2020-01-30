@@ -80,18 +80,20 @@ simulation.create = function()
     trapdoors =
     {
       {
-        pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, 150),
         target = 'zombie',
+        pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, 256),
         direction = -1,
+        open = false,
+        key = 'lshift'
       },
       {
-        pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, 450),
+        pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, 512-32),
         target = 'albino',
         direction = -1,
+        open = false,
+        key = 'lctrl'
       },
     },
-
-    trapdoors_open = false,
     push_pull = 0,
 
     lives = constants.max_lives
@@ -161,7 +163,7 @@ simulation.update = function(state)
 
 
     for _, trapdoor in pairs(state.trapdoors) do
-      if state.trapdoors_open and misc_math.point_in_box(
+      if trapdoor.open and misc_math.point_in_box(
         mouse.pos,
         trapdoor.pos - vector.new(constants.trapdoor_width/2, constants.trapdoor_height/2),
         constants.trapdoor_width,
