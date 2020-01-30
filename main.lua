@@ -13,6 +13,7 @@ local vector = require('vector')
 --BLOAT: background tiles
 --BLOAT: random occasional mouse movement without player interaction
 --BLOAT: placeable trapdoors
+--BLOAT: Alapati facts
 
 
 
