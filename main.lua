@@ -29,7 +29,7 @@ function love.load()
 
   elevator_music:play()
 
-  --math.randomseed(os.time()) UNCOMMENT ME IN FINAL VER
+  math.randomseed(os.time())
 
   --state = simulation.create()
   --simulation.add_mice_to_pool(state,50,'healthy')
