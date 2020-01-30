@@ -12,7 +12,8 @@ constants =
   mouse_drag = 0.001,
   spawn_delay = 100,
 
-  mouse_radius = 20,
+  mouse_width = 60,
+  mouse_height = 20,
 
   max_push_distance = 150,
   mouse_drag = 1,

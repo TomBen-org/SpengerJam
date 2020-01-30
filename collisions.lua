@@ -13,7 +13,7 @@ collisions.create_empty = function()
 end
 
 collisions.try_add_mouse = function(collider, mouse)
-  local mouse_collider = collider:circle(mouse.pos.x, mouse.pos.y, constants.mouse_radius)
+  local mouse_collider = collider:rectangle(mouse.pos.x, mouse.pos.y, constants.mouse_width, constants.mouse_height)
 
   if next(collider:collisions(mouse_collider)) then
     collider:remove(mouse_collider)
@@ -25,7 +25,7 @@ end
 
 collisions.add_all_mice = function(collider, state)
   for _, mouse in pairs(state.mice) do
-    mouse.collider_tmp = collider:circle(mouse.pos.x, mouse.pos.y, constants.mouse_radius)
+    mouse.collider_tmp = collider:rectangle(mouse.pos.x, mouse.pos.y, constants.mouse_width, constants.mouse_height)
   end
 end
 
