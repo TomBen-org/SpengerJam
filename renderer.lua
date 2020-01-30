@@ -59,17 +59,8 @@ renderer.render_state = function(state)
   love.graphics.setColor(1, 1, 1)
   love.graphics.draw(images.room.png,0,0)
 
-  --love.graphics.setColor(1,1,0)
-  --love.graphics.rectangle("line", 0, 0, constants.screen_w, constants.clip_top)
-  --love.graphics.rectangle("line", 0, constants.screen_h - constants.clip_bottom, constants.screen_w, constants.clip_bottom)
-
-
 
   for _, trapdoor in pairs(state.trapdoors) do
-
-
-
-
     love.graphics.setColor(0, 1, 0)
 
     local mode = "fill"
@@ -90,9 +81,19 @@ renderer.render_state = function(state)
     render_mouse(mouse)
   end
 
-  love.graphics.setColor(0, 0, 0)
+  love.graphics.setColor(1, 1, 1)
   love.graphics.print("mice in pool: "..#state.mice_pool,0,15)
   love.graphics.print("lives: ".. state.lives .. "/" .. constants.max_lives,0,25)
+
+
+  love.graphics.setColor(0, 1, 0, 0.2)
+  love.graphics.circle("fill", love.mouse.getX(), love.mouse.getY(), constants.max_push_distance)
+
+
+
+--  love.graphics.setColor(1,1,0, 0.8)
+--  love.graphics.rectangle("fill", 0, 0, constants.screen_w, constants.clip_top)
+--  love.graphics.rectangle("fill", 0, constants.screen_h - constants.clip_bottom, constants.screen_w, constants.clip_bottom)
 end
 
 return renderer

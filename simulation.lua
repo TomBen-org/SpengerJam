@@ -81,13 +81,13 @@ simulation.create = function()
     {
       {
         target = 'zombie',
-        pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, 256),
+        pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, constants.clip_top + constants.trapdoor_height/2 + 20),
         direction = -1,
         open = false,
         key = 'lshift'
       },
       {
-        pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, 512-32),
+        pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, constants.screen_h - constants.clip_bottom - constants.trapdoor_height/2 - 20),
         target = 'albino',
         direction = -1,
         open = false,
@@ -112,7 +112,6 @@ simulation.update = function(state)
     local target_y_position = love.mouse.getY()
     local distance = (mouse.pos - vector.new(love.mouse.getX(), target_y_position)):len()
     local y_distance = math.abs(mouse.pos.y - target_y_position)
-
 
     if distance > constants.max_push_distance then
       distance = 0
@@ -142,7 +141,7 @@ simulation.update = function(state)
     }
 
 
-    if state.push_pull ~= 0 or push_pull_offset == 0 then
+    if distance > 0 then
       table.insert(try_place_positions, 1, vector.new(new_mouse_pos.x, mouse.pos.y + push_pull_offset * constants.mouse_y_speed))
     end
 
@@ -163,7 +162,7 @@ simulation.update = function(state)
 
 
     for _, trapdoor in pairs(state.trapdoors) do
-      if trapdoor.open and misc_math.point_in_box(
+      if misc_math.point_in_box(
         mouse.pos,
         trapdoor.pos - vector.new(constants.trapdoor_width/2, constants.trapdoor_height/2),
         constants.trapdoor_width,
