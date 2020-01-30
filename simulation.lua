@@ -9,65 +9,79 @@ local set_difficulty = function(state)
     constants.mouse_y_speed = 3
     constants.mouse_drag = 1
     constants.max_push_distance = 250
-    constants.spawn_delay = 120
+    constants.spawn_delay = 100
     state.difficulty = state.difficulty + 1
+    state.lives = state.lives + 1
   elseif state.difficulty == 1 and state.score > 10 then
     constants.max_wave = 1
     constants.mouse_x_speed = 1
     constants.mouse_y_speed = 0.5
     constants.spawn_delay = 100
     state.difficulty = state.difficulty + 1
+    state.lives = state.lives + 1
   elseif state.difficulty == 2 and state.score > 20 then
     constants.max_wave = 1
     constants.mouse_x_speed = 3
     constants.mouse_y_speed = 1
     constants.spawn_delay = 80
     state.difficulty = state.difficulty + 1
+    state.lives = state.lives + 1
   elseif state.difficulty == 3 and state.score > 30 then
     constants.max_wave = 2
     constants.mouse_x_speed = 3
     constants.mouse_y_speed = 2
-    constants.spawn_delay = 120
+    constants.spawn_delay = 220
     state.difficulty = state.difficulty + 1
+    state.lives = state.lives + 1
   elseif state.difficulty == 4 and state.score > 40 then
     constants.max_wave = 2
     constants.mouse_x_speed = 3
-    constants.spawn_delay = 100
+    constants.spawn_delay = 200
     state.difficulty = state.difficulty + 1
+    state.lives = state.lives + 1
   elseif state.difficulty == 5 and state.score > 50 then
     constants.max_wave = 1
     constants.mouse_x_speed = 4
     constants.spawn_delay = 40
     state.difficulty = state.difficulty + 1
+    state.lives = state.lives + 1
   elseif state.difficulty == 6 and state.score > 70 then
     constants.max_wave = 1
     constants.mouse_x_speed = 4
-    constants.spawn_delay = 100
+    constants.mouse_y_speed = 1
+    constants.spawn_delay = 80
     state.difficulty = state.difficulty + 1
+    state.lives = state.lives + 1
   elseif state.difficulty == 7 and state.score > 90 then
-    constants.max_wave = 4
+    constants.max_wave = 2
     constants.mouse_x_speed = 2
-    constants.spawn_delay = 300
+    constants.spawn_delay = 200
     state.difficulty = state.difficulty + 1
+    state.lives = state.lives + 1
   elseif state.difficulty == 8 and state.score > 110 then
     constants.max_wave = 1
     constants.mouse_x_speed = 3
-    constants.spawn_delay = 30
+    constants.mouse_y_speed = 2
+    constants.spawn_delay = 60
     state.difficulty = state.difficulty + 1
+    state.lives = state.lives + 1
   elseif state.difficulty == 9 and state.score > 150 then
-    constants.max_wave = 3
+    constants.max_wave = 2
     constants.mouse_x_speed = 3
     constants.spawn_delay = 200
     state.difficulty = state.difficulty + 1
+    state.lives = state.lives + 1
   elseif state.difficulty == 10 and state.score > 200 then
     constants.max_wave = 2
     constants.mouse_x_speed = 5
     constants.spawn_delay = 150
     state.difficulty = state.difficulty + 1
+    state.lives = state.lives + 1
   elseif state.difficulty > 10 and state.difficulty*20 < state.score then
     constants.spawn_delay = constants.spawn_delay * 0.9
     constants.mouse_x_speed = constants.mouse_x_speed * 1.1
     state.difficulty = state.difficulty + 1
+    state.lives = state.lives + 1
   end
 
 
