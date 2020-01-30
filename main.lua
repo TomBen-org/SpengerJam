@@ -10,6 +10,7 @@ local vector = require('vector')
 --TODO: trapdoor animation
 --TODO: trapdoor mouse interaction
 --TODO: two trapdoors, three mouse types
+--TODO: feedback when geting it right and wrong
 
 --BLOAT: background tiles
 --BLOAT: random occasional mouse movement without player interaction
@@ -25,6 +26,9 @@ function love.load()
 
   state = simulation.create()
   simulation.add_mice_to_pool(state,50,'healthy')
+  simulation.add_mice_to_pool(state,50,'zombie')
+  simulation.add_mice_to_pool(state,50,'albino')
+  simulation.shuffle_pool(state)
 end
 
 function love.draw()

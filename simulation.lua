@@ -1,6 +1,17 @@
 local misc_math = require("misc_math")
 local vector = require("vector")
 
+local function shuffle(t)
+    local rand = math.random
+    assert(t, "table.shuffle() expected a table, got nil")
+    local iterations = #t
+    local j
+
+    for i = iterations, 2, -1 do
+        j = rand(i)
+        t[i], t[j] = t[j], t[i]
+    end
+end
 
 local activate_mouse = function(state,x,y)
   local next_mouse = table.remove(state.mice_pool,1)
@@ -26,6 +37,10 @@ end
 
 local simulation = {}
 
+simulation.shuffle_pool = function(state)
+  shuffle(state.mice_pool)
+end
+
 simulation.add_mice_to_pool = function (state,quantity,type)
   for k = 1, quantity do
   table.insert(state.mice_pool, {
@@ -46,7 +61,8 @@ simulation.create = function()
     trapdoors =
     {
       {
-        pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, 300)
+        pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, 300),
+        target = 'albino'
       }
     },
 
