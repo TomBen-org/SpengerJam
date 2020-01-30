@@ -44,7 +44,6 @@ function love.draw()
     renderer.render_before_game(last_state)
     return
   end
-
   renderer.render_state(state)
 
   love.graphics.setColor(0,125,30)

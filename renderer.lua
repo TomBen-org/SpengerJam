@@ -41,6 +41,7 @@ end
 local renderer = {}
 
 renderer.on_load = function()
+  the_font = love.graphics.newFont('/assets/font-regular.ttf',16)
   images = {}
   images.trapdoor = {
   png = love.graphics.newImage('assets/trapdoor-sheet.png'),
@@ -60,6 +61,9 @@ renderer.on_load = function()
   images.rat_zombie = {
     png = love.graphics.newImage('assets/rat-zombie.png'),
     grid = anim8.newGrid(128,128,128*16,128)
+  }
+  images.cheese = {
+    png = love.graphics.newImage('assets/cheese.png')
   }
 end
 
@@ -132,6 +136,19 @@ renderer.render_state = function(state)
 
   love.graphics.setColor(1, 0, 0, state.blood_alpha)
   love.graphics.rectangle("fill", 0, 0, constants.screen_w, constants.screen_h)
+
+  local click_text = love.graphics.newText(the_font,"Left click for cheese")
+  love.graphics.setColor(0,0,0)
+  local margin = 15
+  local x,y = (constants.screen_w/2)-(click_text:getWidth()/2),constants.screen_h-50
+  love.graphics.rectangle("fill",x-margin,y-margin,click_text:getWidth()+margin*2,click_text:getHeight()+margin*2)
+  love.graphics.setColor(1,1,1)
+  love.graphics.draw(click_text,x,y)
+
+  if state.push_pull == 2 then
+    love.graphics.draw(images.cheese.png,love.mouse.getX()-16,love.mouse.getY()-16)
+  end
+
 end
 
 renderer.render_before_game = function(maybe_state)
