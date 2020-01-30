@@ -8,7 +8,20 @@ local render_mouse = function(mouse)
   elseif mouse.infection == 'zombie' then
     love.graphics.setColor(0.2, 1, 0.2)
   end
-  love.graphics.rectangle("fill", mouse.pos.x-constants.mouse_width/2, mouse.pos.y-constants.mouse_width/2, constants.mouse_width, constants.mouse_height)
+  local ox = 128+64
+  local oy = 128+86
+  local scale = 0.6
+  love.graphics.setColor(1,1,1)
+  if mouse.animation then
+    if mouse.infection == 'healthy' then
+      mouse.animation:draw(images.rat_normal.png,mouse.pos.x-ox,mouse.pos.y-oy)
+    elseif mouse.infection == 'albino' then
+      mouse.animation:draw(images.rat_albino.png,mouse.pos.x-ox,mouse.pos.y-oy)
+    elseif mouse.infection == 'zombie' then
+      mouse.animation:draw(images.rat_zombie.png,mouse.pos.x-ox,mouse.pos.y-oy)
+    end
+  end
+  love.graphics.rectangle("line", mouse.pos.x-constants.mouse_width/2, mouse.pos.y-constants.mouse_width/2, constants.mouse_width, constants.mouse_height)
 end
 
 local render_trapdoor = function(trapdoor)
@@ -36,6 +49,18 @@ renderer.on_load = function()
   images.room = {
     png = love.graphics.newImage('assets/floor/floor.png')
   }
+  images.rat_normal = {
+    png = love.graphics.newImage('assets/rat-normal.png'),
+    grid = anim8.newGrid(384,384,384*8,384)
+  }
+  images.rat_albino = {
+    png = love.graphics.newImage('assets/rat-albino.png'),
+    grid = anim8.newGrid(384,384,384*8,384)
+  }
+  images.rat_zombie = {
+    png = love.graphics.newImage('assets/rat-zombie.png'),
+    grid = anim8.newGrid(384,384,384*8,384)
+  }
 end
 
 renderer.update = function(state,dt)
@@ -49,6 +74,14 @@ renderer.update = function(state,dt)
     elseif trapdoor.animation.position == 1 and trapdoor.direction < 0 then
       trapdoor.animation:pause()
     end
+  end
+  
+  for _, mouse in pairs(state.mice) do
+    if not mouse.animation then
+      mouse.animation = anim8.newAnimation(images.rat_zombie.grid('1-8',1), 0.08)
+      mouse.animation:gotoFrame(math.random(1,8))
+    end
+    mouse.animation:update(dt)
   end
 end
 

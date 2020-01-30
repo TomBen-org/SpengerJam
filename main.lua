@@ -5,10 +5,9 @@ local vector = require('vector')
 --TODO: puzzle generator
 --TODO: score feedback graphics
 --TODO: lives/fuckups graphics
---TODO: background image (1280x720)
 --TODO: trapdoor mouse interaction
---TODO: two trapdoors, three mouse types
---TODO: feedback when geting it right and wrong
+--TODO: feedback when getting it right and wrong
+--TODO: mouse graphics
 
 --BLOAT: background tiles
 --BLOAT: random occasional mouse movement without player interaction

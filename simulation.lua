@@ -25,6 +25,7 @@ local activate_mouse = function(state, collider, x,y)
       infection = next_mouse.infection,
       active = true,
       to_pool = false,
+      animation = nil,
     }
     if collisions.try_add_mouse(collider, new_mouse) then
       table.insert(state.mice, new_mouse)
