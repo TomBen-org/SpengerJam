@@ -16,21 +16,30 @@ local vector = require('vector')
 
 
 
-
 local state
+local last_state
+
 function love.load()
   math.randomseed(1)
   renderer.on_load()
   --math.randomseed(os.time()) UNCOMMENT ME IN FINAL VER
 
-  state = simulation.create()
-  simulation.add_mice_to_pool(state,50,'healthy')
-  simulation.add_mice_to_pool(state,50,'zombie')
-  simulation.add_mice_to_pool(state,50,'albino')
-  simulation.shuffle_pool(state)
+  --state = simulation.create()
+  --simulation.add_mice_to_pool(state,50,'healthy')
+  --simulation.add_mice_to_pool(state,50,'zombie')
+  --simulation.add_mice_to_pool(state,50,'albino')
+  --simulation.shuffle_pool(state)
 end
 
 function love.draw()
+  love.graphics.setColor(0.5,0.5,0.5)
+  love.graphics.clear()
+
+  if not state then
+    renderer.render_before_game(last_state)
+    return
+  end
+
   renderer.render_state(state)
 
   love.graphics.setColor(0,125,30)
@@ -41,13 +50,13 @@ function love.resize()
 end
 
 function love.keypressed(key)
-  for _, door in pairs(state.trapdoors) do
-    if door.key == key then
-      door.open = true
-      door.direction = 1
-      door.animation:resume()
-    end
-  end
+  --for _, door in pairs(state.trapdoors) do
+  --  if door.key == key then
+  --    door.open = true
+  --    door.direction = 1
+  --    door.animation:resume()
+  --  end
+  --end
 
   --if key == "space" then
   --  state.trapdoors_open = true
@@ -60,13 +69,13 @@ function love.keypressed(key)
 end
 
 function love.keyreleased(key)
-  for _, door in pairs(state.trapdoors) do
-    if door.key == key then
-      door.open = false
-      door.direction = -1
-      door.animation:resume()
-    end
-  end
+  --for _, door in pairs(state.trapdoors) do
+  --  if door.key == key then
+  --    door.open = false
+  --    door.direction = -1
+  --    door.animation:resume()
+  --  end
+  --end
 
   --if key == "space" then
   --  state.trapdoors_open = false
@@ -86,6 +95,10 @@ function love.wheelmoved(x,y)
 end
 
 function love.mousepressed(x,y,button)
+  if not state then
+    state = simulation.create()
+  end
+
   if state.push_pull == 0 and button == 2 then
     state.push_pull = 2
   elseif state.push_pull == 0 and button == 1 then
@@ -94,6 +107,10 @@ function love.mousepressed(x,y,button)
 end
 
 function love.mousereleased(x,y,button)
+  if not state then
+    return
+  end
+
   if state.push_pull == 2 and button == 2 then
     state.push_pull = 0
   elseif state.push_pull == 1 and button == 1 then
@@ -105,17 +122,15 @@ function love.quit()
 
 end
 
-local mouse_update = function(mouse,dt)
-
-end
 
 local accumulatedDeltaTime = 0
 function love.update(deltaTime)
+  if not state then
+    return
+  end
+
   renderer.update(state,deltaTime)
   accumulatedDeltaTime = accumulatedDeltaTime + deltaTime
-  for _, mouse in pairs(state.mice) do
-    mouse_update(mouse,deltaTime)
-  end
   local tickTime = 1/60
 
   while accumulatedDeltaTime > tickTime do
@@ -123,4 +138,9 @@ function love.update(deltaTime)
       accumulatedDeltaTime = accumulatedDeltaTime - tickTime
   end
 
+
+  if state.lives == 0 then
+    last_state = state
+    state = nil
+  end
 end

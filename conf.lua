@@ -6,8 +6,8 @@ constants =
   clip_bottom = 128,
   clip_top = 128,
 
-  trapdoor_width = 100,
-  trapdoor_height = 100,
+  trapdoor_width = 130,
+  trapdoor_height = 130,
   mouse_speed = 5,
   mouse_drag = 0.001,
   spawn_delay = 60,

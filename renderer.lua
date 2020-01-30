@@ -86,8 +86,6 @@ renderer.update = function(state,dt)
 end
 
 renderer.render_state = function(state)
-  love.graphics.setColor(0.5,0.5,0.5)
-  love.graphics.clear()
 
   love.graphics.setColor(1, 1, 1)
   love.graphics.draw(images.room.png,0,0)
@@ -102,6 +100,7 @@ renderer.render_state = function(state)
     end
 
     render_trapdoor(trapdoor)
+    --love.graphics.setColor(1,1,1)
     --love.graphics.rectangle("line",
     --trapdoor.pos.x - constants.trapdoor_width/2,
     --trapdoor.pos.y - constants.trapdoor_height/2,
@@ -115,7 +114,7 @@ renderer.render_state = function(state)
   end
 
   love.graphics.setColor(1, 1, 1)
-  love.graphics.print("mice in pool: "..#state.mice_pool,0,15)
+  love.graphics.print("score: "..state.score,0,15)
   love.graphics.print("lives: ".. state.lives .. "/" .. constants.max_lives,0,25)
 
 
@@ -124,13 +123,24 @@ renderer.render_state = function(state)
 
 
 
---  love.graphics.setColor(1,1,0, 0.8)
---  love.graphics.rectangle("fill", 0, 0, constants.screen_w, constants.clip_top)
---  love.graphics.rectangle("fill", 0, constants.screen_h - constants.clip_bottom, constants.screen_w, constants.clip_bottom)
+  --love.graphics.setColor(1,1,0, 0.8)
+  --love.graphics.rectangle("fill", 0, 0, constants.screen_w, constants.clip_top)
+  --love.graphics.rectangle("fill", 0, constants.screen_h - constants.clip_bottom, constants.screen_w, constants.clip_bottom)
 
 
   love.graphics.setColor(1, 0, 0, state.blood_alpha)
   love.graphics.rectangle("fill", 0, 0, constants.screen_w, constants.screen_h)
+end
+
+renderer.render_before_game = function(maybe_state)
+  love.graphics.setColor(1,1,1)
+
+  if maybe_state then
+    love.graphics.print("You Lose!", 100, 70)
+    love.graphics.print("Score: " .. maybe_state.score, 100, 80)
+  end
+
+  love.graphics.print("Click to start", 100, 100)
 end
 
 return renderer

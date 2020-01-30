@@ -15,7 +15,11 @@ local function shuffle(t)
 end
 
 local activate_mouse = function(state, collider, x,y)
-  local next_mouse = table.remove(state.mice_pool,1)
+  --local next_mouse = table.remove(state.mice_pool,1)
+
+
+  local infections = {"healthy", "zombie", "albino"}
+  local next_mouse = {infection = infections[math.random(1, 3)]}
 
   local new_mouse
   for i=1,100 do
@@ -33,12 +37,13 @@ local activate_mouse = function(state, collider, x,y)
     end
   end
 
-  -- we failed, just put it back
-  table.insert(state.mice_pool, 1, next_mouse)
+  ---- we failed, just put it back
+  --table.insert(state.mice_pool, 1, next_mouse)
 end
 
 local check_spawn_mouse = function(state)
-  if #state.mice_pool > 0 and state.last_spawn_update + constants.spawn_delay < state.ticks_played  then
+  --if #state.mice_pool > 0 and state.last_spawn_update + constants.spawn_delay < state.ticks_played  then
+  if state.last_spawn_update + constants.spawn_delay < state.ticks_played  then
     local spacing = math.random(1,4) * 20
     local group_size = math.random(1,math.min(1,#state.mice_pool))
     local starting_y = math.random(constants.clip_top,constants.screen_h-constants.clip_bottom-(spacing*group_size))
@@ -82,13 +87,13 @@ simulation.create = function()
     {
       {
         target = 'zombie',
-        pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, constants.clip_top + constants.trapdoor_height/2 + 20),
+        pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, constants.clip_top + constants.trapdoor_height/2 + 50),
         direction = -1,
         open = false,
         key = 'lshift'
       },
       {
-        pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, constants.screen_h - constants.clip_bottom - constants.trapdoor_height/2 - 20),
+        pos = vector.new(constants.screen_w - constants.trapdoor_width - 100, constants.screen_h - constants.clip_bottom - constants.trapdoor_height/2 - 50),
         target = 'albino',
         direction = -1,
         open = false,
@@ -99,6 +104,7 @@ simulation.create = function()
 
     lives = constants.max_lives,
     blood_alpha = 0,
+    score = 0,
   }
 
   return state
@@ -161,7 +167,14 @@ simulation.update = function(state)
 
     if mouse.pos.x >= constants.screen_w then
       mouse.active = false
-      mouse.to_pool = true
+      --mouse.to_pool = true
+
+      if mouse.infection ~= "healthy" then
+        state.lives = math.max(state.lives - 1, 0)
+        state.blood_alpha = 1
+      else
+        state.score = state.score + 1
+      end
     end
 
 
@@ -175,6 +188,8 @@ simulation.update = function(state)
         if trapdoor.target ~= mouse.infection then
           state.lives = math.max(state.lives - 1, 0)
           state.blood_alpha = 1
+        else
+          state.score = state.score + 1
         end
         mouse.active = false
       end
@@ -182,9 +197,9 @@ simulation.update = function(state)
   end
 
   for mouse_index, mouse in pairs(state.mice) do
-    if mouse.to_pool then
-      table.insert(state.mice_pool,{infection=mouse.infection})
-    end
+    --if mouse.to_pool then
+    --  table.insert(state.mice_pool,{infection=mouse.infection})
+    --end
     if mouse.active == false then
       table.remove(state.mice,mouse_index)
     end
