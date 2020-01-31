@@ -39,6 +39,7 @@ local render_trapdoor = function(trapdoor)
 
   local offset = 128
   trapdoor.animation:draw(images.trapdoor.png,trapdoor.pos.x-offset,trapdoor.pos.y-offset,0,2,2)
+
 end
 
 local renderer = {}
@@ -96,6 +97,8 @@ renderer.update = function(state,dt)
       trapdoor.animation:pause()
     elseif trapdoor.animation.position == 1 and trapdoor.direction < 0 then
       trapdoor.animation:pause()
+    else
+      trapdoor.animation:resume()
     end
   end
   

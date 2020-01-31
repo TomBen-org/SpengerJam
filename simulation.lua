@@ -66,15 +66,15 @@ local set_difficulty = function(state)
     state.difficulty = state.difficulty + 1
     state.lives = state.lives + 1
   elseif state.difficulty == 9 and state.score > 150 then
-    constants.max_wave = 2
+    constants.max_wave = 1
     constants.mouse_x_speed = 3
-    constants.spawn_delay = 200
+    constants.spawn_delay = 100
     state.difficulty = state.difficulty + 1
     state.lives = state.lives + 1
   elseif state.difficulty == 10 and state.score > 200 then
-    constants.max_wave = 2
+    constants.max_wave = 1
     constants.mouse_x_speed = 5
-    constants.spawn_delay = 150
+    constants.spawn_delay = 60
     state.difficulty = state.difficulty + 1
     state.lives = state.lives + 1
   elseif state.difficulty > 10 and state.difficulty*20 < state.score then
@@ -210,9 +210,9 @@ simulation.update = function(state)
 
   for _, door in pairs(state.trapdoors) do
     if state.ticks_played > door.last_update + 100 then
-      door.open = true
-      door.direction = 1
-      door.animation:resume()
+      door.open = false
+      door.direction = -1
+      --door.animation:resume()
       door.last_update = state.ticks_played
     end
   end
@@ -290,8 +290,8 @@ simulation.update = function(state)
         constants.trapdoor_width,
         constants.trapdoor_height)
       then
-        trapdoor.open = false
-        trapdoor.direction = -1
+        trapdoor.open = true
+        trapdoor.direction = 1
         trapdoor.animation:resume()
         trapdoor.last_update = state.ticks_played
 
